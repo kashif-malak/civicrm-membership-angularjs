@@ -28,11 +28,12 @@ function civicrm_api3_relative_date_converter_Convertrelativedates($params)
   $to = relativeToAbs($params['to']);
 
   //Get data from DB and return to the caller.
-    $result = civicrm_api3('Membership', 'get', array(
-    'sequential' => 1,
-    'return' => array("contact_id.display_name", "start_date", "end_date", "membership_type_id.description", "contact_id"),
-    'start_date' => array('>=' => $from[0]),
-    'end_date' => array('<=' => $to[1]),
+   $result = civicrm_api3('Membership', 'get', array(
+  'sequential' => 1,
+  'return' => array("contact_id.display_name", "membership_type_id.description", "contact_id", "end_date", "start_date"),
+  'start_date' => array('BETWEEN' => array($from[0], $from[1])),
+  'end_date' => array('BETWEEN' => array($to[0], $to[1])),
+ 
   ));
  return $result;
   }
